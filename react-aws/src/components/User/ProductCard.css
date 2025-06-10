@@ -1,0 +1,42 @@
+.productCard {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.productCard:hover {
+  box-shadow: #2761ea 0px 0px 10px;
+  cursor: pointer;
+  transition: 400ms ease-in-out;
+  scale: 1.01;
+}
+
+.coverImage {
+  border-radius: 8px;
+  width: 100%;
+  height: 200px;
+}
+
+.buttomStyle {
+  border: none;
+  color: white;
+  border-radius: 8px;
+
+  padding: 8px;
+  background: linear-gradient(to right, #2761ea, #9034e9);
+}
+
+.productCard h3,
+.productCard h4 {
+  margin: 0;
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.btnAndFav {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

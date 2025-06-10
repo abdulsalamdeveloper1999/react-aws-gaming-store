@@ -1,0 +1,15 @@
+.uplaodButton {
+  width: 50vw;
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  background-color: #2463eb;
+  color: white;
+  cursor: pointer;
+}
+
+.uplaodButton:hover {
+  box-shadow: #3e7bff 0px 0px 20px;
+  transition: 200ms ease-in;
+  cursor: pointer;
+}
