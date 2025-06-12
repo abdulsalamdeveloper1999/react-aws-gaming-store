@@ -24,18 +24,20 @@ This repository contains a full-stack application with a React + TypeScript fron
 
 ## Features
 
-- **Frontend:**  
+- **Frontend:**
+
   - Built with React, TypeScript, and Vite.
   - Modern UI for product upload and user product browsing.
   - Image upload with preview.
   - Product form with title, description, price, and quantity.
 
-- **Backend:**  
+- **Backend:**
+
   - Spring Boot REST API.
   - Health check endpoint at `/api/health`.
   - PostgreSQL database integration.
 
-- **DevOps:**  
+- **DevOps:**
   - Dockerized frontend and backend.
   - PostgreSQL container for persistent data.
   - Docker Compose for easy orchestration.
@@ -50,12 +52,14 @@ This repository contains a full-stack application with a React + TypeScript fron
 ### Running the Project
 
 1. **Clone the repository:**
+
    ```sh
    git clone <your-repo-url>
    cd react-development
    ```
 
 2. **Start all services:**
+
    ```sh
    docker-compose up --build
    ```
@@ -77,10 +81,6 @@ This repository contains a full-stack application with a React + TypeScript fron
 - Update frontend code in [`react-aws/src`](react-aws/src).
 - Update backend code in [`react-aws-server/src`](react-aws-server/src).
 - Database credentials can be changed in [`docker-compose.yml`](docker-compose.yml) and [`application.properties`](react-aws-server/src/main/resources/application.properties).
-
-## License
-
-This project is for educational/demo purposes.
 
 ---
 
