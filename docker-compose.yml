@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:15
+    container_name: postgres
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypass
@@ -22,10 +23,15 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
-    volumes:
-      - ./react-aws-server:/app
+    # volumes:
+    #   - ./react-aws-server:/app
     networks:
       - db
+    develop:
+      watch:
+        - action: rebuild
+          path: ./react-aws-server
+          target: /app
 
   frontend:
     build:
