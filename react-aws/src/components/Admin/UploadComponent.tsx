@@ -1,88 +1,130 @@
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEventHandler,
+} from "react";
 import { Upload } from "lucide-react";
-import { useRef, useState, type ChangeEventHandler } from "react";
 import "./UploadComponent.css";
 import { fileToDataString } from "./utils";
 
-function UploadComponent() {
-  const inputRef = useRef<HTMLInputElement>(null);
+interface UploadComponentProps {
+  onFileSelect: (file: File) => void;
+  resetSignal: boolean;
+}
 
+const UploadComponent: React.FC<UploadComponentProps> = ({
+  onFileSelect,
+  resetSignal,
+}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [previewImageSrc, setPreviewImageSrc] = useState<string>();
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  useEffect(() => {
+    if (resetSignal) {
+      setPreviewImageSrc(undefined);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    }
+  }, [resetSignal]);
 
   const handleButtonClick = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
+    inputRef.current?.click();
+  };
+
+  const handleFileSelect = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      // 5MB limit
+      alert("File size must be less than 5MB");
+      return;
+    }
+
+    try {
+      const dataString = await fileToDataString(file);
+      setPreviewImageSrc(dataString);
+      onFileSelect(file);
+    } catch (error) {
+      console.error("Error processing file:", error);
+      alert("Error processing file. Please try again.");
     }
   };
 
   const handleChangeFile: ChangeEventHandler<HTMLInputElement> = async (e) => {
     const file = e.target.files?.[0];
-
-    if (!file) {
-      return;
+    if (file) {
+      await handleFileSelect(file);
     }
+  };
 
-    try {
-      setPreviewImageSrc(await fileToDataString(file));
-    } catch (error) {
-      console.error(error);
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      await handleFileSelect(file);
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-
-        alignItems: "center",
-      }}
-    >
+    <div className="upload-component">
       <div
-        style={{
-          width: "50vw",
-          height: "200px",
-          marginLeft: "20px",
-          marginRight: "20px",
-          flexDirection: "column",
-          border: "2px dashed #D1D5DA",
-          padding: "10px",
-          borderRadius: "12px",
-          borderColor: "#D1D5DA",
-          alignItems: "center",
-          display: "flex",
-        }}
+        className={`upload-area ${isDragOver ? "drag-over" : ""} ${
+          previewImageSrc ? "has-image" : ""
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={handleButtonClick}
       >
-        {previewImageSrc == null ? (
-          <>
-            <Upload color="#9BA3AF" size={40} />
-            <h3>Drag & drop images here</h3>
-            <p>or</p>
-            <p style={{ color: "#D1D5DA" }}>
+        {!previewImageSrc ? (
+          <div className="upload-content">
+            <Upload className="upload-icon" size={40} />
+            <h3 className="upload-title">Drag & drop images here</h3>
+            <p className="upload-or">or</p>
+            <p className="upload-hint">
               Supports: JPG, PNG, WebP (Max 5MB each)
             </p>
-          </>
+          </div>
         ) : (
-          <img
-            style={{ width: "50vw", height: "200px", borderRadius: "12px" }}
-            src={previewImageSrc}
-            alt=""
-          />
+          <img className="preview-image" src={previewImageSrc} alt="Preview" />
         )}
       </div>
 
       <input
         type="file"
-        hidden
         ref={inputRef}
         onChange={handleChangeFile}
         accept="image/*"
+        className="file-input"
       />
-      <button className="uplaodButton" onClick={handleButtonClick}>
+
+      <button
+        type="button"
+        className="upload-button"
+        onClick={handleButtonClick}
+      >
         Browse Files
       </button>
     </div>
   );
-}
+};
 
 export default UploadComponent;
