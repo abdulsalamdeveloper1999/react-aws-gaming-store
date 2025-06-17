@@ -1,9 +1,13 @@
 package com.asdevify.react_aws.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.asdevify.react_aws.models.ProductEntity;
@@ -44,6 +48,18 @@ public class ProductService {
             productEntity.setImageUrl(imageUrl);
             return productRepo.save(productEntity);
 
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    public List<ProductEntity> getProducts() throws Exception {
+
+        try {
+            List<ProductEntity> products = productRepo.findAll();
+
+            return products;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

@@ -1,11 +1,12 @@
 import { Heart } from "lucide-react";
-import type { ProductModel } from "../../pages/UserPage/UserPage";
-import "./ProductCard.css";
 
-function ProductCard(props: ProductModel) {
+import "./ProductCard.css";
+import type { ProductEntity } from "../../models/ProductEntity";
+
+function ProductCard(props: ProductEntity) {
   return (
     <div className="productCard">
-      <img className="coverImage" src={props.coverImage}></img>
+      <img className="coverImage" src={props.imageUrl}></img>
       <h4>{props.title}</h4>
       <h3>{props.price}</h3>
       <h3>{props.quantity}</h3>

@@ -1,5 +1,7 @@
 package com.asdevify.react_aws.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -58,6 +60,23 @@ public class ProductController {
 
             return new ResponseEntity<>("Product Created Successfully", HttpStatus.CREATED);
 
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/get-products")
+    public ResponseEntity<?> getProducts() {
+
+        try {
+
+            List<ProductEntity> products = productService.getProducts();
+            if (products == null) {
+                return new ResponseEntity<>("Error occured", HttpStatus.BAD_REQUEST);
+
+            }
+            return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
